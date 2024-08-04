@@ -8,6 +8,7 @@ pub fn main() !void {
     defer db.deinit();
 
     try db.open_db(DB_FILE);
+    try db.createDbIfNotExists();
 
     std.debug.print("Finished\n", .{});
 }

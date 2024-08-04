@@ -11,6 +11,9 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    // exe.linkLibC();
+    exe.linkSystemLibrary("sqlite3");
+
     b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);
@@ -34,4 +37,13 @@ pub fn build(b: *std.Build) void {
 
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_exe_unit_tests.step);
+
+    const exe_check = b.addExecutable(.{
+        .name = "zurl",
+        .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = .Debug,
+    });
+    const check = b.step("check", "Check if compiles");
+    check.dependOn(&exe_check.step);
 }

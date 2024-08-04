@@ -25,3 +25,16 @@ pub fn deinit(self: *DB) void {
         std.debug.print("Could not open database because '{s}'\n", .{c.sqlite3_errstr(rc)});
     }
 }
+
+pub fn createDbIfNotExists(self: *DB) !void {
+    const create_db =
+        \\ CREATE TABLE IF NOT EXISTS url (
+        \\      id INTEGER PRIMARY KEY AUTOINCREMENT,
+        \\      short VARCHAR(5) NOT NULL,
+        \\      full_url LONGTEXT NOT NULL
+        \\ ) 
+    ;
+
+    _ = create_db;
+    _ = self;
+}

@@ -10,6 +10,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    const httpz_module = b.dependency("httpz", .{ .target = target, .optimize = optimize }).module("httpz");
+    exe.root_module.addImport("httpz", httpz_module);
 
     // exe.linkLibC();
     exe.linkSystemLibrary("sqlite3");
@@ -44,6 +46,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = .Debug,
     });
+    exe_check.root_module.addImport("httpz", httpz_module);
     const check = b.step("check", "Check if compiles");
     check.dependOn(&exe_check.step);
 }

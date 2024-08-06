@@ -32,7 +32,7 @@ It creates a new Entry in the Database for the given key and returns it:
 
 The Key will always be a 5 Character long alpha-numeric string.
 
-## GET `/{key}`
+## `GET /{key}`
 
 This endpoint looks up the given key and sends a 302 with the Location set to the url found in the database. If there is no key,
 it returns a 404.

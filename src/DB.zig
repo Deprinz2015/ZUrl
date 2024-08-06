@@ -6,7 +6,7 @@ const c = @cImport(
 
 const ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-const Error = error{
+pub const Error = error{
     CouldNotOpen,
     SQLiteError,
     CouldNotGenerateKey,
@@ -30,7 +30,7 @@ const UrlEntry = struct {
     }
 
     /// frees the .short slice
-    fn freeShort(self: *const UrlEntry, alloc: Allocator) void {
+    fn freeKey(self: *const UrlEntry, alloc: Allocator) void {
         alloc.free(self.key);
     }
 
@@ -77,6 +77,7 @@ fn deinitEntries(self: *DB) void {
         self.alloc.free(entry.url);
         self.alloc.free(entry.key);
     }
+    self.found_entries.clearAndFree();
 }
 
 pub fn deinit(self: *DB) void {
@@ -89,12 +90,13 @@ pub fn deinit(self: *DB) void {
     self.found_entries.deinit();
 }
 
-pub fn newUrl(self: *DB, url: []const u8) !void {
+/// dupes the created key with provided alloc
+pub fn newUrl(self: *DB, url: []const u8, alloc: Allocator) ![]const u8 {
     const entry = UrlEntry.createFromUrl(self.alloc, url) catch {
         std.debug.print("Could not create a new entry from url.\n", .{});
         return Error.CouldNotGenerateKey;
     };
-    defer entry.freeShort(self.alloc);
+    defer entry.freeKey(self.alloc);
 
     const insert_sql = "INSERT INTO url (key, url) VALUES ('{s}', '{s}')";
     const insert_query = std.fmt.allocPrintZ(self.alloc, insert_sql, .{ entry.key, entry.url }) catch {
@@ -107,6 +109,8 @@ pub fn newUrl(self: *DB, url: []const u8) !void {
         std.debug.print("Could not insert entry\n", .{});
         return e;
     };
+
+    return try alloc.dupe(u8, entry.key);
 }
 
 pub fn readKey(self: *DB, key: []const u8) ![]const u8 {

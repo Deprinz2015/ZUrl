@@ -4,6 +4,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
     const httpz = b.dependency("httpz", .{ .target = target, .optimize = .ReleaseSafe });
+    const zli = b.dependency("zli", .{ .target = target, .optimize = .ReleaseSafe });
 
     const exe = b.addExecutable(.{
         .name = "zurl",
@@ -12,6 +13,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     exe.root_module.addImport("httpz", httpz.module("httpz"));
+    exe.root_module.addImport("Zli", zli.module("Zli"));
     exe.linkLibC();
     exe.addCSourceFile(.{ .file = b.path("lib/sqlite3.c") });
     exe.addIncludePath(b.path("lib"));
@@ -34,6 +36,7 @@ pub fn build(b: *std.Build) void {
         .optimize = .Debug,
     });
     exe_check.root_module.addImport("httpz", httpz.module("httpz"));
+    exe_check.root_module.addImport("Zli", zli.module("Zli"));
     exe_check.linkLibC();
     exe_check.addCSourceFile(.{ .file = b.path("lib/sqlite3.c") });
     exe_check.addIncludePath(b.path("lib"));

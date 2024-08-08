@@ -1,11 +1,12 @@
 const std = @import("std");
 const DB = @import("DB.zig");
 const Server = @import("Server.zig");
+const Zli = @import("Zli");
 
 const GPA = std.heap.GeneralPurposeAllocator;
 
-const DB_FILE = "data/urls.db";
-const PORT = 8080;
+const DEFAULT_DB_FILE = "data/urls.db";
+const DEFAULT_PORT = 8080;
 
 var db: DB = undefined;
 var server: Server = undefined;
@@ -15,13 +16,28 @@ pub fn main() !void {
     const alloc = gpa.allocator();
     defer std.debug.assert(gpa.deinit() == .ok);
 
+    var parser = Zli.init(alloc);
+    defer parser.deinit();
+
+    try parser.addOption("port", null, "Port number, on which the server to run on.");
+    try parser.addOption("db", null, "Path to the sqlite file.");
+    try parser.addOption("help", 'h', "Print this help/usage message.");
+
+    if (try parser.option(bool, "help") orelse false) {
+        try parser.help(std.io.getStdErr().writer());
+        return;
+    }
+
+    const port = try parser.option(u16, "port") orelse DEFAULT_PORT;
+    const dbfile = try parser.option([]const u8, "db") orelse DEFAULT_DB_FILE;
+
     db = DB.init(alloc);
     defer db.deinit();
 
-    try db.open_db(DB_FILE);
+    try db.open_db(dbfile);
     try db.createDbIfNotExists();
 
-    server = try Server.init(alloc, &db, PORT);
+    server = try Server.init(alloc, &db, port);
     defer server.deinit();
 
     std.posix.sigaction(std.posix.SIG.INT, &.{

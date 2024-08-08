@@ -6,6 +6,10 @@
             .url = "git+https://github.com/karlseguin/http.zig#f97c2de46ac141366457801f2ed11c1ae4d4d9a8",
             .hash = "12201ddb1be53d54f0947f0ab1d0cca9bdc8060d22973f466dbca6eb95cd9baa7771",
         },
+        .zli = .{
+            .url = "git+https://gitlab.com/nihklas/zli.git#9289550d0864a8b877ca1f3c0c984b2d3b98bc12",
+            .hash = "122040a7413721267bf9584a30ead23e0fbca979e38575bebaf0d2614090731d7ecd",
+        },
     },
     .paths = .{
         "build.zig",

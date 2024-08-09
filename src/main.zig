@@ -23,8 +23,8 @@ pub fn main() !void {
     try parser.addOption("db", null, "Path to the sqlite file.");
     try parser.addOption("help", 'h', "Print this help/usage message.");
 
-    if (try parser.option(bool, "help") orelse false) {
-        try parser.help(std.io.getStdErr().writer());
+    if (try parser.option(bool, "help")) {
+        _ = try parser.help(std.io.getStdErr().writer(), 0);
         return;
     }
 

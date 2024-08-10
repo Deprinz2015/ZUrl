@@ -19,7 +19,7 @@ pub fn main() !void {
     var parser = Zli.init(alloc);
     defer parser.deinit();
 
-    try parser.addOption("port", null, "Port number, on which the server to run on.");
+    try parser.addOption("port", 'p', "Port number, on which the server to run on.");
     try parser.addOption("db", null, "Path to the sqlite file.");
     try parser.addOption("help", 'h', "Print this help/usage message.");
 

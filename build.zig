@@ -27,20 +27,4 @@ pub fn build(b: *std.Build) void {
     }
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
-
-    // Check step for better lsp diagnostics
-    const exe_check = b.addExecutable(.{
-        .name = "zurl",
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = .Debug,
-    });
-    exe_check.root_module.addImport("httpz", httpz.module("httpz"));
-    exe_check.root_module.addImport("Zli", zli.module("Zli"));
-    exe_check.linkLibC();
-    exe_check.addCSourceFile(.{ .file = b.path("lib/sqlite3.c") });
-    exe_check.addIncludePath(b.path("lib"));
-
-    const check = b.step("check", "Check if compiles");
-    check.dependOn(&exe_check.step);
 }

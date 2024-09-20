@@ -7,8 +7,8 @@
             .hash = "12209018285fde7ae6216acafe44fc199036239e1f24bda2b513bbcc1b6bc9a70752",
         },
         .zli = .{
-            .url = "git+https://gitlab.com/nihklas/zli.git#81d692d5aa2bedd503cd73007952def002a0d2c7",
-            .hash = "1220fabe0a1dab0b2725f2c60175713f6db255050e811047cc27ded693c4bdefb3e5",
+            .url = "git+https://gitlab.com/nihklas/zli.git#2b1d5910ac479a6bba27438d218a4794fd3f95a9",
+            .hash = "12204088f4ec440af29fd696a9b30e5835f277d659aad625540846e6979e15793545",
         },
     },
     .paths = .{

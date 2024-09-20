@@ -5,8 +5,6 @@ const Zli = @import("Zli");
 
 const GPA = std.heap.GeneralPurposeAllocator;
 
-const DEFAULT_DB_FILE = "data/urls.db";
-
 var db: DB = undefined;
 var server: Server = undefined;
 
@@ -28,12 +26,10 @@ pub fn main() !u8 {
         return 0;
     }
 
-    const dbfile = parser.options.db orelse DEFAULT_DB_FILE;
-
     db = DB.init(alloc);
     defer db.deinit();
 
-    try db.open_db(dbfile);
+    try db.open_db(parser.options.db);
     try db.createDbIfNotExists();
 
     server = try Server.init(alloc, &db, parser.options.port);

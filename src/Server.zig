@@ -6,7 +6,7 @@ const Allocator = std.mem.Allocator;
 
 const Self = @This();
 
-_server: httpz.ServerCtx(*DB, *DB),
+_server: httpz.Server(*DB),
 alloc: Allocator,
 
 pub fn init(alloc: Allocator, db: *DB, port: u16) !Self {
@@ -15,10 +15,10 @@ pub fn init(alloc: Allocator, db: *DB, port: u16) !Self {
         ._server = undefined,
     };
 
-    server._server = try httpz.ServerApp(*DB).init(alloc, .{ .port = port }, db);
-    var router = server._server.router();
-    router.post("/create", createAction);
-    router.get("/:key", redirectAction);
+    server._server = try .init(alloc, .{ .port = port }, db);
+    var router = server._server.router(.{});
+    router.post("/create", createAction, .{});
+    router.get("/:key", redirectAction, .{});
 
     return server;
 }

@@ -3,12 +3,12 @@
     .version = "0.0.0",
     .dependencies = .{
         .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig#f97c2de46ac141366457801f2ed11c1ae4d4d9a8",
-            .hash = "12201ddb1be53d54f0947f0ab1d0cca9bdc8060d22973f466dbca6eb95cd9baa7771",
+            .url = "git+https://github.com/karlseguin/http.zig?ref=master#ffdce2eeb8499c0b5001f5c5bf141cc33c22b215",
+            .hash = "12209018285fde7ae6216acafe44fc199036239e1f24bda2b513bbcc1b6bc9a70752",
         },
         .zli = .{
-            .url = "git+https://gitlab.com/nihklas/zli.git#e6c0be8b0f85c4c456e175573460b315d2534da9",
-            .hash = "1220604130484790f45d27529234e0cfb08b916c46b5e5b9d81cbb9653a2925f8d5a",
+            .url = "git+https://gitlab.com/nihklas/zli.git#87b9da075e15c13152eaa9c20554875e271b82c1",
+            .hash = "1220cd9f3f3ae02b9a15f35210704ec2ec5d1242cb283442946c28772f7a9da6567b",
         },
     },
     .paths = .{
